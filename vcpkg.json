@@ -1,0 +1,14 @@
+{
+    "name": "sommelier",
+    "version-string": "0.1",
+    "dependencies": [
+        "args",
+        "eigen3",
+        "fmt",
+        {
+            "name": "hdf5",
+            "features": [ "zlib" ]
+        },
+        "skia"
+    ]
+}
