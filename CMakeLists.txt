@@ -14,16 +14,23 @@ find_package(skia REQUIRED)
 # Ensure this is always defined across all .cpp files
 add_compile_definitions(EIGEN_USE_THREADS)
 
+add_library(skrapp
+    src/skrapp/macos/main_macos.mm
+)
+target_link_libraries(skrapp
+    skia::skia
+)
+
 # Main executable
 add_executable(sommelier
-    src/main.cpp
+    src/app.cpp
 )
 target_link_libraries(sommelier
     ${CMAKE_THREAD_LIBS_INIT}
     Eigen3::Eigen
     fmt::fmt
     hdf5::hdf5-static
-    skia::skia
+    skrapp
 )
 install(TARGETS sommelier RUNTIME DESTINATION bin)
 # Parse version number
