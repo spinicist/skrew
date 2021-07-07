@@ -8,7 +8,7 @@ find_package(Threads REQUIRED)
 find_package(args REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(fmt REQUIRED)
-find_package(hdf5 REQUIRED)
+find_package(HDF5 REQUIRED)
 find_package(skia REQUIRED)
 
 # Ensure this is always defined across all .cpp files
