@@ -22,17 +22,17 @@ target_link_libraries(skrapp
 )
 
 # Main executable
-add_executable(sommelier
+add_executable(skrew
     src/app.cpp
 )
-target_link_libraries(sommelier
+target_link_libraries(skrew
     ${CMAKE_THREAD_LIBS_INIT}
     Eigen3::Eigen
     fmt::fmt
     hdf5::hdf5-static
     skrapp
 )
-install(TARGETS sommelier RUNTIME DESTINATION bin)
+install(TARGETS skrew RUNTIME DESTINATION bin)
 # Parse version number
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-target_include_directories(sommelier PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(skrew PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
