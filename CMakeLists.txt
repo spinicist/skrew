@@ -15,10 +15,19 @@ find_package(skia REQUIRED)
 add_compile_definitions(EIGEN_USE_THREADS)
 
 add_library(skrapp
+    src/skrapp/window.cpp
     src/skrapp/macos/main_macos.mm
+    src/skrapp/macos/window_macos.mm
 )
+find_library(COCOA_LIBRARY Cocoa)
 target_link_libraries(skrapp
     skia::skia
+    ${COCOA_LIBRARY}
+)
+set_target_properties(skrapp PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
 # Main executable
@@ -31,6 +40,11 @@ target_link_libraries(skrew
     fmt::fmt
     hdf5::hdf5-static
     skrapp
+)
+set_target_properties(skrew PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 install(TARGETS skrew RUNTIME DESTINATION bin)
 # Parse version number
