@@ -5,6 +5,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "../skrapp.h"
+#include "fmt/format.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
 
   // Now we process the events
   while (![appDelegate done]) {
+    fmt::print("Received event\n");
     NSEvent *event;
     do {
       event = [NSApp nextEventMatchingMask:NSEventMaskAny
