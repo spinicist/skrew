@@ -2,6 +2,4 @@
 
 namespace Skrapp {
 
-Window::~Window() {}
-
 } // namespace Skrapp

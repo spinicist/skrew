@@ -15,11 +15,17 @@ find_package(skia REQUIRED)
 add_compile_definitions(EIGEN_USE_THREADS)
 
 add_library(skrapp
+    src/skrapp/skrapp.cpp
     src/skrapp/window.cpp
     src/skrapp/macos/main_macos.mm
     src/skrapp/macos/window_macos.mm
 )
 add_compile_definitions(SK_BUILD_FOR_MAC)
+target_compile_options(skrapp PUBLIC
+    -Wno-gnu-zero-variadic-macro-arguments
+    -Wno-gnu-anonymous-struct
+    -Wno-nested-anon-types
+    -Wno-import-preprocessor-directive-pedantic)
 find_library(COCOA_LIBRARY Cocoa)
 find_library(METAL_LIBRARY Metal)
 find_library(QUARTZ_LIBRARY QuartzCore)
@@ -32,7 +38,7 @@ target_link_libraries(skrapp
 set_target_properties(skrapp PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS ON
+    CXX_EXTENSIONS OFF
 )
 
 # Main executable
@@ -49,7 +55,7 @@ target_link_libraries(skrew
 set_target_properties(skrew PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS ON
+    CXX_EXTENSIONS OFF
 )
 install(TARGETS skrew RUNTIME DESTINATION bin)
 # Parse version number

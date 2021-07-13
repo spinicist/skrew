@@ -2,8 +2,6 @@
 
 #include "fmt/format.h"
 
-#include "skia/core/SkCanvas.h"
-#include "skia/core/SkGraphics.h"
 #include "skia/core/SkSurface.h"
 #include "skia/core/SkSurfaceProps.h"
 #include "skia/gpu/mtl/GrMtlBackendContext.h"
@@ -17,6 +15,8 @@
 
 @interface MainView : NSView
 - (MainView *)initWithWindow:(Skrapp::WindowMac *)initWindow;
+- (SkSurface *)surface;
+- (void)finishFrame;
 @end
 
 using Skrapp::Window;
@@ -24,12 +24,14 @@ using Skrapp::WindowMac;
 
 std::unique_ptr<Window> Window::Make()
 {
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
   auto window = std::make_unique<WindowMac>();
   return window;
 }
 
 WindowMac::WindowMac()
 {
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
   WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:this];
 
   constexpr int iw = 640;
@@ -43,18 +45,28 @@ WindowMac::WindowMac()
                                           backing:NSBackingStoreBuffered
                                             defer:NO];
 
-  MainView *view = [[MainView alloc] initWithWindow:this];
-  [window_ setContentView:view];
-  [window_ makeFirstResponder:view];
+  view_ = [[MainView alloc] initWithWindow:this];
+  [window_ setContentView:view_];
+  [window_ makeFirstResponder:view_];
   [window_ setDelegate:delegate];
   [window_ setAcceptsMouseMovedEvents:YES];
   [window_ setRestorable:NO];
 
-  [view release];
-
   [window_ orderFront:nil];
   [NSApp activateIgnoringOtherApps:YES];
   [window_ makeKeyAndOrderFront:NSApp];
+}
+
+SkSurface *WindowMac::surface()
+{
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
+  return [view_ surface];
+}
+
+void WindowMac::finishFrame()
+{
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
+  [view_ finishFrame];
 }
 
 @implementation WindowDelegate {
@@ -63,13 +75,14 @@ WindowMac::WindowMac()
 
 - (WindowDelegate *)initWithWindow:(Skrapp::WindowMac *)w
 {
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
   window_ = w;
   return self;
 }
 
 - (void)windowDidResize:(NSNotification *)notification
 {
-  fmt::print("WindowDelegate windowDidResize\n");
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
   // NSView *view = window_->window.contentView;
   // CGFloat scale = 1.f;
   // window_->onResize(view.bounds.size.width * scale, view.bounds.size.height * scale);
@@ -85,11 +98,12 @@ WindowMac::WindowMac()
   sk_cfp<id<MTLDevice>> device_;
   sk_cfp<id<MTLCommandQueue>> queue_;
   sk_sp<GrDirectContext> context_;
+  sk_sp<SkSurface> surface_;
 }
 
 - (MainView *)initWithWindow:(Skrapp::WindowMac *)w
 {
-  fmt::print("MainView initWithWindow\n");
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
   self = [super init];
   window_ = w;
 
@@ -116,11 +130,11 @@ WindowMac::WindowMac()
   return self;
 }
 
-- (void)drawRect:(NSRect)rect
+- (SkSurface *)surface
 {
-  fmt::print("MainWindow drawRect\n");
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
   SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
-  sk_sp<SkSurface> surface = SkSurface::MakeFromCAMetalLayer(
+  surface_ = SkSurface::MakeFromCAMetalLayer(
       context_.get(),
       (__bridge GrMTLHandle)layer_,
       kTopLeft_GrSurfaceOrigin,
@@ -129,15 +143,13 @@ WindowMac::WindowMac()
       nullptr,
       &surfaceProps,
       &drawable_);
+  return surface_.get();
+}
 
-  auto canvas = surface->getCanvas();
-  canvas->clear(SK_ColorWHITE);
-  SkPaint paint;
-  paint.setColor(SK_ColorRED);
-  SkRect redRect = SkRect::MakeXYWH(10, 10, 128, 128);
-  canvas->drawRect(redRect, paint);
-  surface->flushAndSubmit();
-
+- (void)finishFrame
+{
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
+  surface_->flushAndSubmit();
   // Swap buffers
   id<CAMetalDrawable> currentDrawable = (id<CAMetalDrawable>)drawable_;
   id<MTLCommandBuffer> commandBuffer([*queue_ commandBuffer]);

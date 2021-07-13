@@ -7,6 +7,8 @@
 #include "../skrapp.h"
 #include "fmt/format.h"
 
+class SkSurface;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 
 @property(nonatomic, assign) BOOL done;
@@ -91,12 +93,8 @@ int main(int argc, char *argv[])
     [pool drain];
     pool = [[NSAutoreleasePool alloc] init];
 
-    // Rather than depending on a Mac event to drive this, we treat our window
-    // invalidation flag as a separate event stream. Window::onPaint() will
-    // clear the invalidation flag, effectively removing it from the stream.
-    // Window_mac::PaintWindows();
-
-    // app->onIdle();
+    app->render(app->window()->surface());
+    app->window()->finishFrame();
   }
 
   // delete app;

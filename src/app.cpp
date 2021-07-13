@@ -1,18 +1,17 @@
 #include "fmt/format.h"
-#include "skia/core/SkGraphics.h"
+
 #include "skrapp/skrapp.h"
 #include "skrapp/window.h"
 
-#include <memory>
+#include "skia/core/SkCanvas.h"
+#include "skia/core/SkGraphics.h"
 
 struct Skrew : Skrapp::App
 {
-  std::unique_ptr<Skrapp::Window> window_;
-
   Skrew(int argc, char **argv);
   ~Skrew() override;
 
-  void onIdle() override;
+  void render(SkSurface *surface) override;
 };
 
 Skrapp::App *Skrapp::App::Make(int argc, char **argv)
@@ -21,14 +20,20 @@ Skrapp::App *Skrapp::App::Make(int argc, char **argv)
 }
 
 Skrew::Skrew(int argc, char **argv)
+    : App()
 {
-  SkGraphics::Init();
-
-  window_ = Skrapp::Window::Make();
-
   fmt::print("ALIVE\n");
 }
 
 Skrew::~Skrew() {}
 
-void Skrew::onIdle() {}
+void Skrew::render(SkSurface *surface)
+{
+  fmt::print("Skrew render\n");
+  SkCanvas *canvas = surface->getCanvas();
+  canvas->clear(SK_ColorWHITE);
+  SkPaint paint;
+  paint.setColor(SK_ColorRED);
+  SkRect redRect = SkRect::MakeXYWH(10, 10, 128, 128);
+  canvas->drawRect(redRect, paint);
+}

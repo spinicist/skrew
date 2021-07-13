@@ -1,13 +1,21 @@
 #pragma once
 
+#include "window.h"
+
 namespace Skrapp {
 
-struct App {
+struct App
+{
   static App *Make(int argc, char **argv);
 
+  App();
   virtual ~App(){};
 
-  virtual void onIdle() = 0;
+  Window *window();
+  virtual void render(SkSurface *surface) = 0;
+
+private:
+  std::unique_ptr<Skrapp::Window> window_;
 };
 
 } // namespace Skrapp
