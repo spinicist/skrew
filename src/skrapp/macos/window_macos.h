@@ -18,10 +18,6 @@ struct WindowMac : public Window
 
 private:
   NSWindow *window_;
-  CAMetalLayer *layer_;
-  sk_cfp<id<MTLDevice>> device_;
-  sk_cfp<id<MTLCommandQueue>> queue_;
-  sk_sp<GrDirectContext> context_;
 };
 
 } // namespace Skrapp

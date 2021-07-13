@@ -32,7 +32,7 @@ target_link_libraries(skrapp
 set_target_properties(skrapp PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
+    CXX_EXTENSIONS ON
 )
 
 # Main executable
@@ -49,7 +49,7 @@ target_link_libraries(skrew
 set_target_properties(skrew PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
+    CXX_EXTENSIONS ON
 )
 install(TARGETS skrew RUNTIME DESTINATION bin)
 # Parse version number
