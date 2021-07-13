@@ -134,15 +134,22 @@ void WindowMac::finishFrame()
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
-  surface_ = SkSurface::MakeFromCAMetalLayer(
+  id<CAMetalDrawable> currentDrawable = [layer_ nextDrawable];
+
+  GrMtlTextureInfo fbInfo;
+  fbInfo.fTexture.retain(currentDrawable.texture);
+
+  GrBackendRenderTarget backendRT(640, 480, 1, fbInfo);
+
+  surface_ = SkSurface::MakeFromBackendRenderTarget(
       context_.get(),
-      (__bridge GrMTLHandle)layer_,
+      backendRT,
       kTopLeft_GrSurfaceOrigin,
-      1,
       kBGRA_8888_SkColorType,
       nullptr,
-      &surfaceProps,
-      &drawable_);
+      &surfaceProps);
+
+  drawable_ = CFRetain((GrMTLHandle)currentDrawable);
   return surface_.get();
 }
 
