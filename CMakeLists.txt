@@ -19,10 +19,15 @@ add_library(skrapp
     src/skrapp/macos/main_macos.mm
     src/skrapp/macos/window_macos.mm
 )
+add_compile_definitions(SK_BUILD_FOR_MAC)
 find_library(COCOA_LIBRARY Cocoa)
+find_library(METAL_LIBRARY Metal)
+find_library(QUARTZ_LIBRARY QuartzCore)
 target_link_libraries(skrapp
     skia::skia
     ${COCOA_LIBRARY}
+    ${METAL_LIBRARY}
+    ${QUARTZ_LIBRARY}
 )
 set_target_properties(skrapp PROPERTIES
     CXX_STANDARD 20
