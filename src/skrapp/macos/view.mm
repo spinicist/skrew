@@ -4,6 +4,7 @@
 #import <QuartzCore/CAConstraintLayoutManager.h>
 #import <QuartzCore/CAMetalLayer.h>
 
+#include "skia/core/SkCanvas.h"
 #include "skia/core/SkSurface.h"
 #include "skia/core/SkSurfaceProps.h"
 #include "skia/gpu/GrDirectContext.h"
@@ -52,7 +53,7 @@
   return self;
 }
 
-- (SkSurface *const)begin
+- (SkCanvas *const)begin
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
@@ -70,7 +71,10 @@
       &surfaceProps);
 
   drawable_ = CFRetain((GrMTLHandle)currentDrawable);
-  return surface_.get();
+  SkCanvas *canvas = surface_->getCanvas();
+  float const scale = self.window.screen.backingScaleFactor;
+  canvas->scale(scale, scale);
+  return canvas;
 }
 
 - (void)finish

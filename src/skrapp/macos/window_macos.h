@@ -13,8 +13,9 @@ struct WindowMac : public Window
   WindowMac();
   ~WindowMac() override {}
 
-  SkSurface *const begin() override;
+  SkCanvas *const begin() override;
   void finish() override;
+  SkSize size() override;
   void resize() override;
 
 private:

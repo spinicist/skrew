@@ -11,8 +11,9 @@ struct Window
   static std::unique_ptr<Window> Make();
   virtual ~Window() = default;
 
-  virtual SkSurface *const begin() = 0;
+  virtual SkCanvas *const begin() = 0;
   virtual void finish() = 0;
+  virtual SkSize size() = 0;
   virtual void resize() = 0;
 };
 

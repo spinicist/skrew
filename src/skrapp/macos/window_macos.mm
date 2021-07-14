@@ -44,7 +44,7 @@ WindowMac::WindowMac()
   [view_ resize];
 }
 
-SkSurface *const WindowMac::begin()
+SkCanvas *const WindowMac::begin()
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   return [view_ begin];
@@ -54,6 +54,12 @@ void WindowMac::finish()
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   [view_ finish];
+}
+
+SkSize WindowMac::size()
+{
+  SkSize sz = SkSize::Make(view_.bounds.size.width, view_.bounds.size.height);
+  return sz;
 }
 
 void WindowMac::resize()

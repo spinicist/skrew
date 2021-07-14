@@ -10,7 +10,7 @@ struct WindowMac;
 
 @interface MainView : NSView
 - (MainView *)initWithWindow:(Skrapp::WindowMac *)initWindow;
-- (SkSurface *const)begin;
+- (SkCanvas *const)begin;
 - (void)finish;
 - (void)resize;
 @end

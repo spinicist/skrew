@@ -11,7 +11,7 @@ struct Skrew : Skrapp::App
   Skrew(int argc, char **argv);
   ~Skrew() override;
 
-  void render(SkSurface *surface) override;
+  void render(SkCanvas *const surface) override;
 };
 
 Skrapp::App *Skrapp::App::Make(int argc, char **argv)
@@ -27,13 +27,13 @@ Skrew::Skrew(int argc, char **argv)
 
 Skrew::~Skrew() {}
 
-void Skrew::render(SkSurface *const surface)
+void Skrew::render(SkCanvas *const canvas)
 {
   fmt::print("Skrew render\n");
-  SkCanvas *canvas = surface->getCanvas();
   canvas->clear(SK_ColorWHITE);
   SkPaint paint;
   paint.setColor(SK_ColorRED);
-  SkRect redRect = SkRect::MakeXYWH(10, 10, 128, 128);
+  SkSize winSz = window()->size();
+  SkRect redRect = SkRect::MakeXYWH(winSz.width() / 2, winSz.height() / 2, 128, 128);
   canvas->drawRect(redRect, paint);
 }

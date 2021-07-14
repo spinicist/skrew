@@ -12,7 +12,7 @@ struct App
   virtual ~App(){};
 
   Window *window();
-  virtual void render(SkSurface *const surface) = 0;
+  virtual void render(SkCanvas *const canvas) = 0;
 
 private:
   std::unique_ptr<Skrapp::Window> window_;
