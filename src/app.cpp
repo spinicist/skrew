@@ -33,6 +33,7 @@ Skrew::~Skrew() {}
 void Skrew::layout(SkRect const rect)
 {
   redRect_ = rect.makeInset(32, 32);
+  setDirty();
 }
 
 void Skrew::render(SkCanvas *const canvas)
@@ -42,4 +43,5 @@ void Skrew::render(SkCanvas *const canvas)
   SkPaint paint;
   paint.setColor(SK_ColorRED);
   canvas->drawRect(redRect_, paint);
+  setClean();
 }

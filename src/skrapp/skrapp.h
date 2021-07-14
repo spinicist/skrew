@@ -12,11 +12,16 @@ struct App
   virtual ~App(){};
 
   Window *window();
+  void setClean();
+  void setDirty();
+  bool isDirty();
+
   virtual void layout(SkRect const rect) = 0;
   virtual void render(SkCanvas *const canvas) = 0;
 
 private:
   std::unique_ptr<Skrapp::Window> window_;
+  bool dirty_;
 };
 
 } // namespace Skrapp
