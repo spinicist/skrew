@@ -41,6 +41,7 @@ WindowMac::WindowMac()
   [window_ orderFront:nil];
   [NSApp activateIgnoringOtherApps:YES];
   [window_ makeKeyAndOrderFront:NSApp];
+  [view_ resize];
 }
 
 SkSurface *const WindowMac::begin()
@@ -53,4 +54,10 @@ void WindowMac::finish()
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   [view_ finish];
+}
+
+void WindowMac::resize()
+{
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
+  [view_ resize];
 }

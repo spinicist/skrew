@@ -15,6 +15,7 @@ struct WindowMac : public Window
 
   SkSurface *const begin() override;
   void finish() override;
+  void resize() override;
 
 private:
   NSWindow *window_;

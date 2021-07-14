@@ -20,6 +20,7 @@
   sk_cfp<id<MTLCommandQueue>> queue_;
   sk_sp<GrDirectContext> context_;
   sk_sp<SkSurface> surface_;
+  int width_, height_;
 }
 
 - (MainView *)initWithWindow:(Skrapp::WindowMac *)w
@@ -59,9 +60,7 @@
 
   GrMtlTextureInfo fbInfo;
   fbInfo.fTexture.retain(currentDrawable.texture);
-
-  GrBackendRenderTarget backendRT(640, 480, 1, fbInfo);
-
+  GrBackendRenderTarget backendRT(width_, height_, 1, fbInfo);
   surface_ = SkSurface::MakeFromBackendRenderTarget(
       context_.get(),
       backendRT,
@@ -86,5 +85,21 @@
   [commandBuffer commit];
   CFRelease(drawable_);
   drawable_ = nil;
+}
+
+- (void)resize
+{
+  fmt::print("{}\n", __PRETTY_FUNCTION__);
+  float const scale = self.window.screen.backingScaleFactor;
+  CGSize backingSize = self.bounds.size;
+  backingSize.width *= scale;
+  backingSize.height *= scale;
+
+  layer_.drawableSize = backingSize;
+  layer_.contentsScale = scale;
+
+  width_ = backingSize.width;
+  height_ = backingSize.height;
+  fmt::print("w {} h {}\n", width_, height_);
 }
 @end

@@ -12,4 +12,5 @@ struct WindowMac;
 - (MainView *)initWithWindow:(Skrapp::WindowMac *)initWindow;
 - (SkSurface *const)begin;
 - (void)finish;
+- (void)resize;
 @end

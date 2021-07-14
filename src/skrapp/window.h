@@ -13,6 +13,7 @@ struct Window
 
   virtual SkSurface *const begin() = 0;
   virtual void finish() = 0;
+  virtual void resize() = 0;
 };
 
 } // namespace Skrapp
