@@ -12,6 +12,7 @@ struct App
   virtual ~App(){};
 
   Window *window();
+  virtual void layout(SkRect const rect) = 0;
   virtual void render(SkCanvas *const canvas) = 0;
 
 private:

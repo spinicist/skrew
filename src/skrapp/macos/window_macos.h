@@ -10,7 +10,7 @@ namespace Skrapp {
 
 struct WindowMac : public Window
 {
-  WindowMac();
+  WindowMac(App *app);
   ~WindowMac() override {}
 
   SkCanvas *const begin() override;

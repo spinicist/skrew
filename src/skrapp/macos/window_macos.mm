@@ -2,20 +2,22 @@
 
 #include "fmt/format.h"
 
+#include "../skrapp.h"
 #include "view.h"
 #include "window_delegate.h"
 
 using Skrapp::Window;
 using Skrapp::WindowMac;
 
-std::unique_ptr<Window> Window::Make()
+std::unique_ptr<Window> Window::Make(App *app)
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
-  auto window = std::make_unique<WindowMac>();
+  auto window = std::make_unique<WindowMac>(app);
   return window;
 }
 
-WindowMac::WindowMac()
+WindowMac::WindowMac(App *app)
+    : Window{app}
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:this];
@@ -41,7 +43,6 @@ WindowMac::WindowMac()
   [window_ orderFront:nil];
   [NSApp activateIgnoringOtherApps:YES];
   [window_ makeKeyAndOrderFront:NSApp];
-  [view_ resize];
 }
 
 SkCanvas *const WindowMac::begin()
@@ -66,4 +67,5 @@ void WindowMac::resize()
 {
   fmt::print("{}\n", __PRETTY_FUNCTION__);
   [view_ resize];
+  app()->layout(SkRect::MakeSize(size()));
 }

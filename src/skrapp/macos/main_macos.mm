@@ -73,7 +73,8 @@ int main(int argc, char *argv[])
   [NSApp setDelegate:appDelegate];
 
   Skrapp::App *app = Skrapp::App::Make(argc, argv);
-
+  app->window()->resize(); // This needs to go here because within the constructor above dynamic
+                           // dispatch does not work
   // This will run until the application finishes launching, then lets us take
   // over
   [NSApp run];
