@@ -27,7 +27,7 @@ Skrew::Skrew(int argc, char **argv)
 
 Skrew::~Skrew() {}
 
-void Skrew::render(SkSurface *surface)
+void Skrew::render(SkSurface *const surface)
 {
   fmt::print("Skrew render\n");
   SkCanvas *canvas = surface->getCanvas();

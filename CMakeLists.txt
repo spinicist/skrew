@@ -19,13 +19,16 @@ add_library(skrapp
     src/skrapp/window.cpp
     src/skrapp/macos/main_macos.mm
     src/skrapp/macos/window_macos.mm
+    src/skrapp/macos/window_delegate.mm
+    src/skrapp/macos/view.mm
 )
 add_compile_definitions(SK_BUILD_FOR_MAC)
 target_compile_options(skrapp PUBLIC
     -Wno-gnu-zero-variadic-macro-arguments
     -Wno-gnu-anonymous-struct
     -Wno-nested-anon-types
-    -Wno-import-preprocessor-directive-pedantic)
+    -Wno-import-preprocessor-directive-pedantic
+    -fno-rtti)
 find_library(COCOA_LIBRARY Cocoa)
 find_library(METAL_LIBRARY Metal)
 find_library(QUARTZ_LIBRARY QuartzCore)

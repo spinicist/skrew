@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
     [pool drain];
     pool = [[NSAutoreleasePool alloc] init];
 
-    app->render(app->window()->surface());
-    app->window()->finishFrame();
+    app->render(app->window()->begin());
+    app->window()->finish();
   }
 
   // delete app;
