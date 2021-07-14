@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
                                  untilDate:[NSDate distantPast]
                                     inMode:NSDefaultRunLoopMode
                                    dequeue:YES];
+      fmt::print("{}\n", event.type);
       [NSApp sendEvent:event];
     } while (event != nil);
 
@@ -98,6 +99,10 @@ int main(int argc, char *argv[])
       app->render(app->window()->begin());
       app->window()->finish();
     }
+    event = [NSApp nextEventMatchingMask:NSEventMaskAny
+                               untilDate:[NSDate distantFuture]
+                                  inMode:NSDefaultRunLoopMode
+                                 dequeue:NO];
   }
 
   // delete app;
